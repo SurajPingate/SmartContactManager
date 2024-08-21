@@ -68,12 +68,14 @@ public class MyConfig{
 				.anyRequest()
 				.authenticated())
 		.formLogin(formLogin -> formLogin
-				. loginPage("/signin")
+				.loginPage("/signin")
+				.loginProcessingUrl("/dologin")
 				.defaultSuccessUrl("/admin/index")
+				//.failureUrl("/login-fail")		// use if you want to redirect to login-fail URL.
 				.permitAll() )
 		.logout(logout -> logout
 				.logoutUrl("/logout")
-				.logoutSuccessUrl("/signin")
+				//.logoutSuccessUrl("/signin")
 				.permitAll() )
 		.authenticationProvider(daoAuthenticationProvider()); //Set the custom authentication provider
 
