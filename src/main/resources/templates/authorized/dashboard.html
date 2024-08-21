@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang = "en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+<html lang = "en" xmlns:th="http://www.thymeleaf.org" th:replace="~{authorized/base::layout(~{::section})}">
 <head>
 	<meta charset="UTF-8" />
 	<title>User DashBoard</title>
@@ -8,6 +8,13 @@
 	
 	<section>
 		<h1>Welcome</h1>
+		<h3>Name <span th:text = "${user.name}"></span></h3>
+		<h3>Email <span th:text = "${user.email}"></span></h3>
+		<h3>About <span th:text = "${user.about}"></span></h3>
+		<h3>Role <span th:text = "${user.role}"></span></h3>
+		
+		<h2><a href="" th:href="@{/logout}">Logout</a></h2>
+		
 	</section>
 </body>
 
