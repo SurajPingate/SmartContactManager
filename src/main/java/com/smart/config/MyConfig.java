@@ -36,7 +36,7 @@ public class MyConfig{
 		daoAuthenticationProvider.setUserDetailsService(getuserDetailsService());
 		daoAuthenticationProvider.setPasswordEncoder(PasswordEncoder());
 		
-		System.out.println(daoAuthenticationProvider);
+		//System.out.println(daoAuthenticationProvider);
 		
 		return daoAuthenticationProvider;
 		
@@ -70,7 +70,7 @@ public class MyConfig{
 		.formLogin(formLogin -> formLogin
 				.loginPage("/signin")
 				.loginProcessingUrl("/dologin")
-				.defaultSuccessUrl("/admin/index")
+				.defaultSuccessUrl("/user/index")
 				//.failureUrl("/login-fail")		// use if you want to redirect to login-fail URL.
 				.permitAll() )
 		.logout(logout -> logout
@@ -80,7 +80,7 @@ public class MyConfig{
 		.authenticationProvider(daoAuthenticationProvider()); //Set the custom authentication provider
 
 		DefaultSecurityFilterChain defaultSecurityFilterChain = http.build();
-		System.out.println(defaultSecurityFilterChain.toString());
+		//System.out.println(defaultSecurityFilterChain.toString());
 		return defaultSecurityFilterChain; 
 	}
 }

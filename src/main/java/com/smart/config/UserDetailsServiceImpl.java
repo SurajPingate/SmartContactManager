@@ -24,8 +24,8 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 			throw new UsernameNotFoundException("Could not found user"); 
 		}
 		
-		System.out.println(userByUserName.getEmail());
-		System.out.println(userByUserName.getRole());
+		//System.out.println(userByUserName.getEmail());
+		//System.out.println(userByUserName.getRole());
 
 		CustomUserDetails customUserDetails = new CustomUserDetails(userByUserName);
 		

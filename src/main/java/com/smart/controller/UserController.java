@@ -54,7 +54,7 @@ public class UserController {
 				model.addAttribute("user", user);
 				return "signup";
 			}
-			user.setRole("ROLE_ADMIN");
+			user.setRole("ROLE_USER");
 			user.setEnabled(true);
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			
