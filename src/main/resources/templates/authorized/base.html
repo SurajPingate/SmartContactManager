@@ -9,6 +9,8 @@
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
 		integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+		
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" th:href="@{/css/style.css}">
 
 	<title th:text="${title}">Base html</title>
@@ -44,9 +46,28 @@
 
 	<!--End of Navbar-->
 	
-	>
+	<div class="sidebar">
+		
+		<span onclick="toggleSidebar()" class="crossBtn">&times;</span>
+		
+		<a href="#" class="item"> <i class="fa-solid fa-house-chimney"></i> Home</a>
+		<a href="#" class="item"> <i class="fa-solid fa-address-book"></i> View Contacts</a>
+		<a href="#" class="item"> <i class="fas fa-pencil-alt"></i> Contact</a>
+		<a href="#" class="item"> <i class="fa-solid fa-user"></i> Your Profile</a>
+		<a href="#" class="item"> <i class="fa-solid fa-gear"></i> Settings</a>
+		<a href="#" class="item"> <i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+		
+		<div class="divider"></div>
+		
+	</div>
+	
+	<div class="content">
+		
+		<i onclick="toggleSidebar()" class="fas fa-bars m-3"></i>
+		
+		<div th:replace="${content}"></div>
+	</div>
 
-	<div th:replace="${content}"></div>
 
 	<!-- Optional JavaScript; choose one of the two! -->
 
