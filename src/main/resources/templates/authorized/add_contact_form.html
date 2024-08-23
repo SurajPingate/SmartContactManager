@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{authorized/base::layout(~{::section})}">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>About</title>
+</head>
+
+<body>
+
+	<section>
+		<div class="card">
+			<i onclick="toggleSidebar()" class="fas fa-bars m-3"></i>
+			<!--Message box-->
+			<div th:if="${session.message}" class="container text-center">
+				<div th:classappend="${'alert-' + session.message.type}" class="alert" role="alert">
+					<span th:text="${session.message.content}">
+				</div>
+				<!--This removed in thymleaf 3.1-->
+			<!--	<th:block th:text="${#session.removeAttribute('message')}"></th:block>			-->
+			
+			<th:block th:text="${@sessionHelper.removeMessageFromSession()}"></th:block>
+				
+			</div>
+			<div class="card-body">
+				<div class="container text-center">
+					<img style="width: 80px;" th:src="@{/img/add.png}">
+				</div>
+
+				<h1 class="text-center">Add Contact</h1>
+				<div class="container-fluid mt-1">
+					<div class="row">
+						<div class="col-md-10 offset-md-1">
+							<form action="#" th:object="${contact}" enctype="multipart/form-data" method="post"
+								th:action="@{/user/process-contact}" class="mt-2">
+
+								<!--First Name filed-->
+								<div required class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text mr-1">
+											<i class="fa fa-plus"></i>
+										</div>
+									</div>
+									<input type="text" id="firstName" name="name" placeholder="Enter FirstName"
+										class="form-control">
+								</div>
+
+								<!--Second Name field-->
+								<div required class="input-group mt-3">
+									<div class="input-group-prepend">
+										<div class="input-group-text mr-1">
+											<i class="fa fa-user-alt"></i>
+										</div>
+									</div>
+									<input type="text" id="secondName" name="secondName" placeholder="Enter LastName"
+										class="form-control">
+								</div>
+
+								<!--Phone Field-->
+								<div required min="10" class="input-group mt-3">
+									<div class="input-group-prepend">
+										<div class="input-group-text mr-1">
+											<i class="fa fa-phone"></i>
+										</div>
+									</div>
+									<input type="number" id="phone" name="phone" placeholder="Enter PhoneNumber"
+										class="form-control">
+								</div>
+
+								<!--Email Field-->
+								<div required class="input-group mt-3">
+									<div class="input-group-prepend">
+										<div class="input-group-text mr-1">
+											@
+										</div>
+									</div>
+									<input type="email" id="email" name="email" placeholder="Enter Email"
+										class="form-control">
+								</div>
+
+								<!--Work Field-->
+								<div required class="input-group mt-3">
+									<div class="input-group-prepend">
+										<div class="input-group-text mr-1">
+											<i class="fa fa-briefcase"></i>
+										</div>
+									</div>
+									<input type="text" id="work" name="work" placeholder="Enter Work"
+										class="form-control">
+								</div>
+
+								<!--Contact Description-->
+								<div class="form-group mt-3">
+									<textarea placeholder="Enter Contact Description" name="description"
+										id="description" class="form-control" rows="5"></textarea>
+								</div>
+
+								<!--Contact Image-->
+								<div class="custom-file">
+									<input type="file" name="profileImage" />
+								</div>
+
+								<div class="container text-center">
+									<button class="btn btn-info btn-md">Save Contact</button>
+								</div>
+
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+	</section>
+</body>
+
+</html>
