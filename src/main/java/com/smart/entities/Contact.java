@@ -20,7 +20,7 @@ public class Contact {
 	private String phone;
 	private String img;
 	@Column(length = 50000)
-	private String description;
+	private String decription;
 	@ManyToOne
 	private User user;
 	
@@ -67,11 +67,11 @@ public class Contact {
 	public void setImg(String img) {
 		this.img = img;
 	}
-	public String getDescription() {
-		return description;
+	public String getDecription() {
+		return decription;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDecription(String decription) {
+		this.decription = decription;
 	}
 	public User getUser() {
 		return user;
@@ -79,10 +79,7 @@ public class Contact {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	@Override
-	public String toString() {
-		return "Contact [id=" + id + ", name=" + name + ", secondName=" + secondName + ", work=" + work + ", email="
-				+ email + ", phone=" + phone + ", img=" + img + ", description=" + description + ", user=" + user.getName() + "]";
-	}
+	
+	
 	
 }
