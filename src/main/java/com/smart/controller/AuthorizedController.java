@@ -10,10 +10,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -131,8 +135,11 @@ public class AuthorizedController {
 	}
 	
 	//Show contacts Handler
-	@GetMapping("/show-contacts")
-	public String showContracts(Model model, Principal principal) {
+	//Pagination code (Added in pagination branch)
+	//per page = 5[n]
+	//current page = 1[page]
+	@GetMapping("/show-contacts/{page}")
+	public String showContracts(@PathVariable("page") Integer page, Model model, Principal principal) {
 		model.addAttribute("title", "Show Contact - Smart Contact Manager");
 
 		/*
@@ -145,15 +152,18 @@ public class AuthorizedController {
 		String userName = principal.getName();
 		User user = userRepository.getUserByUserName(userName);
 		
-		List<Contact> contactsByUserId = contactRepository.findContactsByUserId(user.getId());
+		Pageable pageable = PageRequest.of(page, 5);
+		Page<Contact> contactsByUserId = contactRepository.findContactsByUserId(user.getId(), pageable);
 		
 		if(contactsByUserId.isEmpty()) {
 			model.addAttribute("message", new Message("Your Contact List is Empty, Please add new contacts.", "warning"));
 		}else {
 			model.addAttribute("contacts", contactsByUserId);
+			model.addAttribute("currentPage", page);
+			model.addAttribute("totalPages", contactsByUserId.getTotalPages());
 		}
-		
 		return "authorized/show_contacts";
 	}
+	
 
 }
