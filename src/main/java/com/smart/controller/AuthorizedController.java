@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.smart.entities.Contact;
 import com.smart.entities.User;
 import com.smart.helper.Message;
+import com.smart.repo.ContactRepository;
 import com.smart.repo.UserRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -31,6 +33,8 @@ public class AuthorizedController {
 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private ContactRepository contactRepository;
 
 	/**
 	 * java.security.Principal
@@ -119,9 +123,37 @@ public class AuthorizedController {
 				session.setAttribute("message", new Message("Something went wrong", "danger"));
 			}
 			//model.addAttribute("session", session);
+			return "authorized/add_contact_form";
 		}
 		//we need to redirect it to ViewContacts page after successfully add the contact.
-		return "authorized/add_contact_form";
+		return "redirect:/user/show-contacts";
+		
+	}
+	
+	//Show contacts Handler
+	@GetMapping("/show-contacts")
+	public String showContracts(Model model, Principal principal) {
+		model.addAttribute("title", "Show Contact - Smart Contact Manager");
+
+		/*
+		 * String userName = principal.getName(); 
+		 * User user = userRepository.getUserByUserName(userName); 
+		 * List<Contact> allContacts = user.getContacts();
+		 */
+		
+		// We get the data from contactRepository
+		String userName = principal.getName();
+		User user = userRepository.getUserByUserName(userName);
+		
+		List<Contact> contactsByUserId = contactRepository.findContactsByUserId(user.getId());
+		
+		if(contactsByUserId.isEmpty()) {
+			model.addAttribute("message", new Message("Your Contact List is Empty, Please add new contacts.", "warning"));
+		}else {
+			model.addAttribute("contacts", contactsByUserId);
+		}
+		
+		return "authorized/show_contacts";
 	}
 
 }

@@ -17,10 +17,10 @@
 					<span th:text="${session.message.content}">
 				</div>
 				<!--This removed in thymleaf 3.1-->
-			<!--	<th:block th:text="${#session.removeAttribute('message')}"></th:block>			-->
-			
-			<th:block th:text="${@sessionHelper.removeMessageFromSession()}"></th:block>
-				
+				<!--	<th:block th:text="${#session.removeAttribute('message')}"></th:block>			-->
+
+				<th:block th:text="${@sessionHelper.removeMessageFromSession()}"></th:block>
+
 			</div>
 			<div class="card-body">
 				<div class="container text-center">
@@ -57,14 +57,18 @@
 								</div>
 
 								<!--Phone Field-->
-								<div required min="10" class="input-group mt-3">
+								<div class="input-group mt-3">
 									<div class="input-group-prepend">
 										<div class="input-group-text mr-1">
 											<i class="fa fa-phone"></i>
 										</div>
+										<div class="input-group-text mr-1">
+											+91
+										</div>
 									</div>
-									<input type="number" id="phone" name="phone" placeholder="Enter PhoneNumber"
-										class="form-control">
+									<input type="tel" id="phone" name="phone" placeholder="Enter PhoneNumber"
+										class="form-control" pattern="[0-9]{10}" title="Phone number must be 10 digits"
+										required>
 								</div>
 
 								<!--Email Field-->
