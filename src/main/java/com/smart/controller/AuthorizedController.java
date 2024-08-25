@@ -84,8 +84,9 @@ public class AuthorizedController {
 			contact.setUser(userByUserName);
 			userByUserName.getContacts().add(contact);
 			
-			if(file.isEmpty()) {
-				System.out.println("File is empty");
+			if(!file.getContentType().matches("image/.*")) {
+				throw new Exception("Problem with file type file");
+				
 			}else {
 				String fileName = userByUserName.getId()+"_"+file.getOriginalFilename();
 				contact.setImg(fileName);
@@ -101,6 +102,7 @@ public class AuthorizedController {
 				}
 			}
 
+			// Save data into conact table via user table
 			userRepository.save(userByUserName);
 			
 			//Success msg.
@@ -111,7 +113,11 @@ public class AuthorizedController {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-			session.setAttribute("message", new Message("Something went wrong", "danger"));
+			if(!file.getContentType().matches("image/.*")) {
+				session.setAttribute("message", new Message("File type is not valid, Please use jpge/png format.", "danger"));
+			}else {
+				session.setAttribute("message", new Message("Something went wrong", "danger"));
+			}
 			//model.addAttribute("session", session);
 		}
 		//we need to redirect it to ViewContacts page after successfully add the contact.
