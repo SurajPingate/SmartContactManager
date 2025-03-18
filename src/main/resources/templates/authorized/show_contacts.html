@@ -44,12 +44,15 @@
 					<tbody>
 						<tr th:each="c : ${contacts}">
 							<th scope="row" th:text="'SCM00'+${c.id}">1</th>
-							<td th:text="${c.name}">Mark</td>
+							<td>
+								<img src="" class="my_profile_picture" th:src="@{'/img/' + ${c.img}}" alt="profile photo"/>
+								<span th:text="${c.name}"></span>
+							</td>
 							<td th:text="${c.email}">Otto</td>
 							<td th:text="${c.phone}">@mdo</td>
 							<td>
 								<button class="btn btn-sm">
-									<img style="width: 20px;" th:src="@{/img/view.png}">
+									<a th:href="@{'/user/contact/'+${c.id}}" href="#"> <img style="width: 20px;" th:src="@{/img/view.png}"> </a>
 								</button>
 								<button class="btn btn-sm">
 									<img style="width: 20px;" th:src="@{/img/update.png}">

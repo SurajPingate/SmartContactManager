@@ -7,12 +7,14 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -91,10 +93,11 @@ public class AuthorizedController {
 
 			contact.setUser(userByUserName);
 			userByUserName.getContacts().add(contact);
-			
-			if(!file.getContentType().matches("image/.*")) {
+
+			if(file.isEmpty()) {
+				contact.setImg("contact.png");
+			}else if(!file.getContentType().matches("image/.*")) {
 				throw new Exception("Problem with file type file");
-				
 			}else {
 				String fileName = userByUserName.getId()+"_"+file.getOriginalFilename();
 				contact.setImg(fileName);
@@ -102,17 +105,17 @@ public class AuthorizedController {
 				File saveFile = new ClassPathResource("static/img").getFile();
 				//
 				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + fileName);
-				
+
 				long copy = Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-				
+
 				if(copy == 0L) {
 					throw new Exception("Problem while saving Image file :"+ fileName);
 				}
 			}
 
-			// Save data into conact table via user table
+			// Save data into contact table via user table
 			userRepository.save(userByUserName);
-			
+
 			//Success msg.
 			session.setAttribute("message", new Message("Contact added Successfully", "success"));
 			//model.addAttribute("session", session);
@@ -130,10 +133,10 @@ public class AuthorizedController {
 			return "authorized/add_contact_form";
 		}
 		//we need to redirect it to ViewContacts page after successfully add the contact.
-		return "redirect:/user/show-contacts";
-		
+		return "redirect:/user/show-contacts/0";
+
 	}
-	
+
 	//Show contacts Handler
 	//Pagination code (Added in pagination branch)
 	//per page = 5[n]
@@ -147,14 +150,14 @@ public class AuthorizedController {
 		 * User user = userRepository.getUserByUserName(userName); 
 		 * List<Contact> allContacts = user.getContacts();
 		 */
-		
+
 		// We get the data from contactRepository
 		String userName = principal.getName();
 		User user = userRepository.getUserByUserName(userName);
-		
+
 		Pageable pageable = PageRequest.of(page, 5);
 		Page<Contact> contactsByUserId = contactRepository.findContactsByUserId(user.getId(), pageable);
-		
+
 		if(contactsByUserId.isEmpty()) {
 			model.addAttribute("message", new Message("Your Contact List is Empty, Please add new contacts.", "warning"));
 		}else {
@@ -164,6 +167,22 @@ public class AuthorizedController {
 		}
 		return "authorized/show_contacts";
 	}
-	
+
+	//Showing specific contact details
+	@GetMapping("/contact/{id}")
+	public String shoeContactDetails(@PathVariable("id") int id, Model model) {
+
+		System.out.println(id);
+		//to get actual obj from optional use optional.get method.
+		//Optional<Contact> contactById = contactRepository.findById(id);
+		//Contact contact = contactById.get();
+
+		Contact contactById = contactRepository.findById(id).get();
+
+		model.addAttribute("contact",contactById);
+
+		return "authorized/contact_details";
+	}
+
 
 }
