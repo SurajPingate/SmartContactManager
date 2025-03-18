@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{authorized/base::layout(~{::section})}">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>About</title>
+</head>
+
+<body>
+
+	<section>
+		<div class="card">
+			<i onclick="toggleSidebar()" class="fas fa-bars m-3"></i>
+			<!--Message box-->
+			<div th:if="${message}" class="container text-center">
+				<div class="alert alert-warning" role="alert">
+					<span th:text="${message.content}">
+				</div>
+			</div>
+			<div th:if="${session.message}" class="container text-center">
+				<div th:classappend="${'alert-' + session.message.type}" class="alert" role="alert">
+					<span th:text="${session.message.content}">
+				</div>
+				<!--This removed in thymleaf 3.1-->
+				<!--	<th:block th:text="${#session.removeAttribute('message')}"></th:block>			-->
+
+				<th:block th:text="${@sessionHelper.removeMessageFromSession()}"></th:block>
+
+			</div>
+
+			<div class="card-body">
+				<h1 class="text-center">Your Contacts</h1>
+
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">#ID</th>
+							<th scope="col">Name</th>
+							<th scope="col">Email</th>
+							<th scope="col">Phone</th>
+							<th scope="col">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="c : ${contacts}">
+							<th scope="row" th:text="'SCM00'+${c.id}">1</th>
+							<td>
+								<img src="" class="my_profile_picture" th:src="@{'/img/' + ${c.img}}" alt="profile photo"/>
+								<span th:text="${c.name}"></span>
+							</td>
+							<td th:text="${c.email}">Otto</td>
+							<td th:text="${c.phone}">@mdo</td>
+							<td>
+								<button class="btn btn-sm">
+									<a th:href="@{'/user/contact/'+${c.id}}" href="#"> <img style="width: 20px;" th:src="@{/img/view.png}"> </a>
+								</button>
+								<button class="btn btn-sm">
+									<img style="width: 20px;" th:src="@{/img/update.png}">
+								</button>
+								<button class="btn btn-sm">
+									<img style="width: 20px;" th:src="@{/img/delete.png}">
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<!--Pagination-->
+				<nav aria-label="Page navigation example">
+					<ul class="pagination">
+						<li th:if="${currentPage != 0}" class="page-item">
+							<a th:href="${currentPage - 1}" class="page-link" href="#">Previous</a>
+						</li>
+						<li th:classappend="${currentPage == i-1 ? 'active' : ''}" th:each="i : ${#numbers.sequence(1,totalPages)}" class="page-item">
+							<a th:href="@{${i-1}}" class="page-link" href="#">
+								<span th:text="${i}"></span>
+							</a>
+						</li>
+						<li th:if="${currentPage+1 != totalPages}" class="page-item">
+							<a th:href="${currentPage + 1}" class="page-link" href="#">Next</a>
+						</li>
+					</ul>
+				</nav>
+
+			</div>
+		</div>
+
+
+	</section>
+</body>
+
+</html>
